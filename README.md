@@ -29,7 +29,7 @@ This repository contains structured notes on research papers I have read, catego
    - **Link**: [Paper Link](https://www.usenix.org/conference/osdi24/presentation/zhong-yuhong)
    - **Code Repository**: [Memstrata](https://bitbucket.org/yuhong_zhong/memstrata)
    - **Summary**: Introduces Memstrata, a multi-tenant memory allocator that optimizes performance by reducing inter-VM contention and memory tiering overhead in CXL-based systems.
-   - **Reading Notes**: [Readme](./notes/Memstrata-osdi24.md)
+   - **Reading Notes**: [Readme](./notes/2024/Memstrata-osdi24.md)
 
 #### **3. An Introduction to Compute Express Link (CXL)**
    - **Authors**: Debendra Das Sharma, Robert Blankenship, et al.
