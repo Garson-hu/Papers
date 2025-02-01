@@ -26,10 +26,10 @@ This repository contains structured notes on research papers I have read, catego
 #### **2. Managing Memory Tiers with CXL in Virtualized Environments**
    - **Authors**: Yuhong Zhong, Daniel S. Berger, et al.
    - **Conference**: OSDI 2024
-   - **Link**: [Paper Link](./Memstrata-OSDI24.pdf)
-   - **Code Repository**: [Memstrata on Bitbucket](https://bitbucket.org/yuhong_zhong/memstrata)
+   - **Link**: [Paper Link](https://www.usenix.org/conference/osdi24/presentation/zhong-yuhong)
+   - **Code Repository**: [Memstrata](https://bitbucket.org/yuhong_zhong/memstrata)
    - **Summary**: Introduces Memstrata, a multi-tenant memory allocator that optimizes performance by reducing inter-VM contention and memory tiering overhead in CXL-based systems.
-   - **Reading Notes**: [Readme](./notes/memstrata.md)
+   - **Reading Notes**: [Readme](./notes/Memstrata-osdi24.md)
 
 #### **3. An Introduction to Compute Express Link (CXL)**
    - **Authors**: Debendra Das Sharma, Robert Blankenship, et al.
