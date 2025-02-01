@@ -51,6 +51,5 @@ This repository contains structured notes on research papers I have read, catego
 
 ---
 
-### Operating Systems and Virtualization
+### TBC
 
-_(Add other related papers as needed, with similar structure)_
