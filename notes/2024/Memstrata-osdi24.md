@@ -180,3 +180,4 @@ After that, the outlier VM will not suffer from the slowdown. As shown in figure
        <img src="../../imgs/memstrata-osdi24/M2(c).png" alt="Figure 11(c)" style="width:50%; height:auto;">
        <figcaption>Figure 11(c): Memstrata workflow.</figcaption>
    </figure>
+   
