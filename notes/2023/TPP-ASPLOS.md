@@ -30,3 +30,32 @@ The category of CXL memory can be categorized as shown in Figure 2.
 3. CXL-Memory Characteristics
 - Byte addressable in same physical address space
     - transparent allocation with cache-line granular access
+
+- Memory bandwidth is like DDR channels
+    - NUMA BW is better than a dual socket system
+
+- Close to NUMA latency on dual socket systems
+    - adds ~100ns latency over normal DRAM access
+
+<figure>
+       <img src="../../imgs/TPP-ASPLOS23/B3.png" alt="Figure 3" style="width:50%; height:auto;">
+       <figcaption>Figure 3: CXL memory lantency and bandwidth.</figcaption>
+   </figure>
+
+4. Performance drops with large CXL-Memory as shown in Figure 4
+<figure>
+       <img src="../../imgs/TPP-ASPLOS23/B4.png" alt="Figure 4" style="width:70%; height:auto;">
+       <figcaption>Figure 4: CXL memory performance degration.</figcaption>
+   </figure>
+
+Consider about the aforementioned background/drawback, this paper present a work named TPP (Transparent Management of Tiered-Memory) which include the following main parts:
+
+1. Effective memory management for tiered-memory system
+    - lightweight demotion to slow memory tier
+    - efficient hot page promotion to fast memory tier
+    - optimized page allocation path to reduce latency
+    - workload aware page allocation policy
+
+2. Without modifying any applications or hardware
+
+# 

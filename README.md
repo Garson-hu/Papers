@@ -38,6 +38,13 @@ This repository contains structured notes on research papers I have read, catego
    - **Summary**: Provides an overview of CXL, its evolution from CXL 1.0 to 3.0, and its impact on datacenter architectures.
    - **Reading Notes**: [Readme](./notes/cxl-intro.md)
 
+#### **4. TPP : Transparent Page Placement for CXL-Enabled Tiered-Memory**
+   - **Authors**: 
+   - **Source**: 
+   - **Link**: [Paper Link](./CXL-intro.pdf)
+   - **Summary**: Provides an overview of CXL, its evolution from CXL 1.0 to 3.0, and its impact on datacenter architectures.
+   - **Reading Notes**: [Readme](./notes/cxl-intro.md)
+
 ---
 
 ### Persistent Memory (PMEM)
