@@ -39,11 +39,11 @@ This repository contains structured notes on research papers I have read, catego
    - **Reading Notes**: [Readme](./notes/cxl-intro.md)
 
 #### **4. TPP : Transparent Page Placement for CXL-Enabled Tiered-Memory**
-   - **Authors**: 
-   - **Source**: 
-   - **Link**: [Paper Link](./CXL-intro.pdf)
-   - **Summary**: Provides an overview of CXL, its evolution from CXL 1.0 to 3.0, and its impact on datacenter architectures.
-   - **Reading Notes**: [Readme](./notes/cxl-intro.md)
+   - **Authors**: Hasan Al Maruf, Hao Wang et al.
+   - **Source**: ASPLOS 23
+   - **Link**: [Paper Link](https://dl.acm.org/doi/10.1145/3582016.3582063)
+   - **Summary**: Introduced an migration mechanism named TPP to transparent migrate pages between local memory and CXL-Memory w/o incur high overhead.
+   - **Reading Notes**: [Readme](./notes/2023/TPP-ASPLOS.md)
 
 ---
 
