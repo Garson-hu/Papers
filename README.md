@@ -11,9 +11,9 @@ This repository contains structured notes on research papers I have read, catego
 
 ---
 
-## 2024
+## CXL-Related Papers
 
-### CXL-Related Papers
+### 2024
 
 #### **1. CXL Memory Expansion: A Closer Look on Actual Platform**
    - **Authors**: Vinicius Petrucci, Eishan Mirakhur, et al.
@@ -38,7 +38,8 @@ This repository contains structured notes on research papers I have read, catego
    - **Summary**: Provides an overview of CXL, its evolution from CXL 1.0 to 3.0, and its impact on datacenter architectures.
    - **Reading Notes**: [Readme](./notes/cxl-intro.md)
 
-#### **4. TPP : Transparent Page Placement for CXL-Enabled Tiered-Memory**
+### 2023
+#### **1. TPP : Transparent Page Placement for CXL-Enabled Tiered-Memory**
    - **Authors**: Hasan Al Maruf, Hao Wang et al.
    - **Source**: ASPLOS 23
    - **Link**: [Paper Link](https://dl.acm.org/doi/10.1145/3582016.3582063)
