@@ -69,28 +69,28 @@ Consider about the aforementioned background/drawback, this paper present a work
 
 2. Temperature Across Different Page Types
     - **Observation:** A large fraction of anon (anonymous) pages is hot, while file pages are comparatively colder within short intervals as shown in Figure 6.
-    <figure>
+<figure>
        <img src="../../imgs/TPP-ASPLOS23/C2.png" alt="Figure 6" style="width:50%; height:auto;">
        <figcaption>Figure 6: Application memory usage over last N mins.</figcaption>
    </figure>
 
 3. Usage of Different Page Types Over TIme
     - **Observation:** Although anon and file usage may vary over time, applications mostly maintain a steady usage pattern as shown in Figure 7. Smart page placement mechanisms should be aware of page type when making placement decision.
-    <figure>
+<figure>
        <img src="../../imgs/TPP-ASPLOS23/C3.png" alt="Figure 7" style="width:60%; height:auto;">
        <figcaption>Figure 7: Memory usage over time for different applicaitons.</figcaption>
    </figure>
 
 4. Impact of Page Types on Performance
     - **Observation:** Workloads have different levels of sensitivity toward different page types that varie over time as shown in FIgure 8.
-    <figure>
+<figure>
        <img src="../../imgs/TPP-ASPLOS23/C4.png" alt="Figure 8" style="width:60%; height:auto;">
        <figcaption>Figure 8: Workloads’ sensitivity towards anons and files varies. High memory capacity utilization provides high throughput.</figcaption>
    </figure>
 
 5. Page Re-access Time Granularity
     - **Observation:** Cold page re-access time varies for workloads as shown in Figure 9. Page placement on a tiered memory system should be aware of this and actively move hot pages to lower memory nodes to avoid high memory access latency.
-    <figure>
+<figure>
        <img src="../../imgs/TPP-ASPLOS23/C5.png" alt="Figure 9" style="width:50%; height:auto;">
        <figcaption>Figure 9: Fraction of pages re-accessed at different intervals.</figcaption>
    </figure>
