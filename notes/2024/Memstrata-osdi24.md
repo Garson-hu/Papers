@@ -181,3 +181,5 @@ After that, the outlier VM will not suffer from the slowdown. As shown in figure
        <figcaption>Figure 11(c): Memstrata workflow.</figcaption>
    </figure>
    
+## Acknowledgement
+All the figures are from the author's slides or paper.
