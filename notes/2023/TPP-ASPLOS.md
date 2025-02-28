@@ -62,7 +62,7 @@ Consider about the aforementioned background/drawback, this paper present a work
 
 1. Page Temperature
     - **Observation:** A significant portion of a datacenter application's accessed memory remain cold for minutes as shown in Figure 5. Tiered memory system can be a good fit for such cold memory if page placement mechanism can move these code pages to a lower memory tier.
-    <figure>
+<figure>
        <img src="../../imgs/TPP-ASPLOS23/C1.png" alt="Figure 5" style="width:50%; height:auto;">
        <figcaption>Figure 5: Application memory usage over last N mins.</figcaption>
    </figure>
