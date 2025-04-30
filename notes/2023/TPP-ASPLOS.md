@@ -7,7 +7,7 @@
 
 <figure>
        <img src="../../imgs/TPP-ASPLOS23/B1.png" alt="Figure 1" style="width:50%; height:auto;">
-       <figcaption>Figure 1: Trends in rack-level memory power and cose increases with new hardware generations over time.</figcaption>
+       <figcaption>Figure 1: Trends in rack-level memory power and cost increases with new hardware generations over time.</figcaption>
    </figure>
 
 
