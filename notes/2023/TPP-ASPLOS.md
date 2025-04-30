@@ -12,6 +12,7 @@
 
 
 2. CXL-based Heterogeneous Memory
+
 The category of CXL memory can be categorized as shown in Figure 2.
 
 <figure>
