@@ -148,6 +148,8 @@ User-space interface to control reclamation watermark
        <figcaption>Figure 12: TPP decouple the allocation and reclamation logice for local memory node. It uses migration for demotion.</figcaption>
    </figure>
 
+*Note*: Watermarks are thresholds defined based on the number of free pages in memory. A low watermark indicates that free memory is still available and the system is not under memory pressure. Page reclamation is triggered when the number of free pages falls below the demotion watermark. At this level, memory can still be allocated, but under stricter conditions, until the number of free pages increases. New allocations are allowed only when the number of free pages exceeds the high watermark.
+
 ## Page Promotion from CXL-Node
 
 ### NUMA Balancing for CXL memory
