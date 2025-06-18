@@ -109,7 +109,7 @@ Based on the above observations, this paper introduced TPP - a smart OS-managed 
 
 ### Page Placement in *Default Linux*
 Every node maintains a water mark to determine load (Figure 10):
-- relcamation triggers when number of free pages goes below the watermark
+- relcamation triggers when number of **FREE** pages goes below the watermark
 - new pages get allocated to remote node
 - reclamation stops when free pages goes above the watermark
 - new allocations again happen on local node
