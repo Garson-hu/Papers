@@ -107,7 +107,7 @@ Based on the above observations, this paper introduced TPP - a smart OS-managed 
 
 ## Migration for Lightweight Reclamation
 
-### Page Placement in ==*Default Linux*==
+### Page Placement in *Default Linux*
 Every node maintains a water mark to determine load (Figure 10):
 - relcamation triggers when number of free pages goes below the watermark
 - new pages get allocated to remote node
@@ -119,7 +119,7 @@ Every node maintains a water mark to determine load (Figure 10):
        <figcaption>Figure 10: Traditional page placement in linux.</figcaption>
    </figure>
 
-### Demotion in TPP - ==Migrate to slow Tiers==
+### Demotion in TPP - *Migrate to slow Tiers*
 Compare to traditional page reclamation, TPP will do the different. After finding the reclamation-candidates, instead of invoking swapping mechanism, TPP put them in to a separate demotion list and try to migrate them to the CXL-node asynchronously. Migration to a NUMA node is orders of magnitude faster than swapping. TPP use Linux's default LRU-based mechanism to selece demotion candidates.
 
 Maintains a separate demotion page list
