@@ -124,10 +124,10 @@ Compare to traditional page reclamation, TPP will do the different. After findin
 
 Maintains a separate demotion page list
 - scans inactive page list
-- if not enough, then scan active pages (memory pressure may be very big)
+- if inactive page not enough, then scan active pages (memory pressure may be very big)
 
-Tries to migrate scanned pages to slow memory tier
-- failed pages follows default reclamation path
+Tries to migrate scanned pages to slow memory tier (CXL Memory)
+- If this migration failed, the failed pages follows default reclamation path
 
 Demotion on CXL-Memory use the default reclamation mechanism (e.g,. pages out to the swap device) since the pages on CXL-Memory is not very performance critical. As shown in Figure 11.
 
