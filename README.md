@@ -46,6 +46,14 @@ This repository contains structured notes on research papers I have read, catego
    - **Summary**: Introduced an migration mechanism named TPP to transparent migrate pages between local memory and CXL-Memory w/o incur high overhead.
    - **Reading Notes**: [Reading notes](./notes/2023/TPP-ASPLOS.md)
 
+#### **1. Pond: CXL-Based Memory Pohttps://github.com/MoatLab/Pondoling Systems for Cloud Platforms **
+   - **Authors**: Huaicheng Li (Virginia Tech) et al
+   - **Source**: ASPLOS 2023
+   - **Link**: [Paper Link](https://dl.acm.org/doi/10.1145/3575693.3578835)
+   - **Code**: [Github](https://github.com/MoatLab/Pond)
+   - **Summary**: 
+   - **Reading Notes**: [Reading notes](./notes/2023/Pond-ASPLOS.md)
+
 ---
 
 ### Persistent Memory (PMEM)
