@@ -56,7 +56,7 @@ This repository contains structured notes on research papers I have read, catego
 
 ---
 
-### Persistent Memory (PMEM)
+## Persistent Memory (PMEM)
 
 #### **1. An Empirical Guide to the Behavior and Use of Scalable Persistent Memory**
    - **Authors**: Jian Yang, Juno Kim, et al.
@@ -67,5 +67,11 @@ This repository contains structured notes on research papers I have read, catego
 
 ---
 
-### TBC
-
+## Memory for LLM
+#### **1. Efficient Memory Management for Large Language Model Serving with PagedAttention**
+   - **Authors**: Woosuk Kwon, Zhuohan Li, et al.
+   - **Conference**: SOSP 2023
+   - **Link**: [Paper Link](https://arxiv.org/abs/2309.06180)
+   - **Code Repository**: [vLLM](https://github.com/vllm-project/vllm)
+   - **Summary**: vLLM introduced PagedAttention: it applies OS-style paging to the KV cache for LLM inference—splitting it into fixed-size blocks and mapping them with a page table to non-contiguous GPU memory—to reduce fragmentation, enable sharing/reuse, and manage memory more efficiently.
+   - **Reading Notes**: [Reading notes](./notes/2023/vLLM-SOSP.md)
