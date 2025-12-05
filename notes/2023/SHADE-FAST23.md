@@ -56,7 +56,7 @@ Used to decide whether an evicted sample should return to the cache.
 
 <figure>
        <img src="../../imgs/SHADE-FAST23/Workflow.png" alt="Figure 3" style="width:70%; height:auto;">
-       <figcaption>Figure 3: CXL memory lantency and bandwidth.</figcaption>
+       <figcaption>Figure 1: Architecture of SHADE.</figcaption>
    </figure>
 
 
