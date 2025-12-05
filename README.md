@@ -75,3 +75,16 @@ This repository contains structured notes on research papers I have read, catego
    - **Code Repository**: [vLLM](https://github.com/vllm-project/vllm)
    - **Summary**: vLLM introduced PagedAttention: it applies OS-style paging to the KV cache for LLM inference—splitting it into fixed-size blocks and mapping them with a page table to non-contiguous GPU memory—to reduce fragmentation, enable sharing/reuse, and manage memory more efficiently.
    - **Reading Notes**: [Reading notes](./notes/2023/vLLM-SOSP.md)
+
+
+## Deep Learning Systems & Storage Optimization
+
+#### **1. SHADE: Enable Fundamental Cacheability for Distributed Deep Learning Training**
+   - **Authors**: Jooyoung Lee, Harsha V. Madhyastha, et al.
+   - **Conference**: FAST 2023
+   - **Link**: [Paper Link](ttps://www.usenix.org/conference/fast23/presentation/lee)
+   - **Summary**: 
+     SHADE introduces an importance-driven approach to make deep-learning training workloads cacheable. 
+     It computes fine-grained per-sample importance, converts them into rank-based scores, and uses PADS (Priority-based Adaptive Data Sampling) 
+     to shape future access patterns. The data layer uses an APP caching policy combining a priority queue and ghost cache to prefetch and retain important samples. This yields up to 4.5× higher cache hit ratio, 2.7× throughput improvement,  and faster model convergence.
+   - **Reading Notes**: [Reading notes](./notes/2023/SHADE-fast23.md)
