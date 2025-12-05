@@ -80,11 +80,11 @@ This repository contains structured notes on research papers I have read, catego
 ## Deep Learning Systems & Storage Optimization
 
 #### **1. SHADE: Enable Fundamental Cacheability for Distributed Deep Learning Training**
-   - **Authors**: Jooyoung Lee, Harsha V. Madhyastha, et al.
+   - **Authors**: Redwan Ibne Seraj Khan, Ahmad Hossein Yazdani, Ali R. Butt et al.
    - **Conference**: FAST 2023
-   - **Link**: [Paper Link](https://www.usenix.org/conference/fast23/presentation/lee)
+   - **Link**: [Paper Link](https://www.usenix.org/conference/fast23/presentation/khan)
    - **Summary**: 
      SHADE introduces an importance-driven approach to make deep-learning training workloads cacheable. 
      It computes fine-grained per-sample importance, converts them into rank-based scores, and uses PADS (Priority-based Adaptive Data Sampling) 
      to shape future access patterns. The data layer uses an APP caching policy combining a priority queue and ghost cache to prefetch and retain important samples. This yields up to 4.5× higher cache hit ratio, 2.7× throughput improvement,  and faster model convergence.
-   - **Reading Notes**: [Reading notes](./notes/2023/SHADE-fast23.md)
+   - **Reading Notes**: [Reading notes](./notes/2023/SHADE-FAST23.md)
