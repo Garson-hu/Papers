@@ -6,6 +6,11 @@ Distributed deep learning (DLT) workloads issue many small, random, read-only I/
 
 SHADE introduces **importance-driven sampling and caching** that convert DLT workloads into cacheable workloads.
 
+<figure>
+       <img src="../../imgs/SHADE-FAST23/Workflow.png" alt="Figure 3" style="width:70%; height:auto;">
+       <figcaption>Figure 1: Architecture of SHADE.</figcaption>
+   </figure>
+
 ## Key Ideas
 
 ### 1. Fine-Grained Per-Sample Importance
@@ -53,11 +58,6 @@ Stores metadata only (no sample data).
 Used to decide whether an evicted sample should return to the cache.
 
 ## APP Caching Policy (Adaptive Priority-Aware Prediction)
-
-<figure>
-       <img src="../../imgs/SHADE-FAST23/Workflow.png" alt="Figure 3" style="width:70%; height:auto;">
-       <figcaption>Figure 1: Architecture of SHADE.</figcaption>
-   </figure>
 
 
 This yields **implicit prefetching**:
