@@ -4,14 +4,24 @@ This repository contains structured notes on research papers I have read, catego
 
 ## Table of Contents
 
-- [2024](#2024)
-  - [CXL-Related Papers](#cxl-related-papers-2024)
-  - [Persistent Memory (PMEM)](#persistent-memory-2024)
-  - [Operating Systems and Virtualization](#operating-systems-and-virtualization-2024)
+- [CXL-Related Papers](#cxl-related-papers) — 2026, 2024, 2023
+- [Persistent Memory (PMEM)](#persistent-memory-pmem)
+- [Memory for LLM](#memory-for-llm)
+- [Deep Learning Systems & Storage Optimization](#deep-learning-systems--storage-optimization)
 
 ---
 
 ## CXL-Related Papers
+
+### 2026
+
+#### **1. Beluga: A CXL-Based Memory Architecture for Scalable and Efficient LLM KVCache Management**
+   - **Authors**: Xinjun Yang, Qingda Hu, Junru Li, Feifei Li, et al. (Alibaba Cloud)
+   - **Conference**: SIGMOD 2026
+   - **Link**: [Paper Link](https://arxiv.org/abs/2511.20172)
+   - **Code Repository**:
+   - **Summary**: Beluga builds a shared memory pool on a commercial CXL 2.0 switch (XConn XC50256) so both CPUs and GPUs reach remote memory with native load/store semantics, removing the host bounce buffer and control-path synchronization that RDMA imposes. Beluga-KVCache applies this to LLM inference in vLLM, cutting TTFT by 89.6% and improving throughput 7.35x over MoonCake. Also contributes a characterization of real CXL 2.0 hardware and nine concrete optimization guidelines.
+   - **Reading Notes**: [Reading notes](./notes/2026/Beluga-SIGMOD26.md)
 
 ### 2024
 
