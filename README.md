@@ -5,6 +5,7 @@ This repository contains structured notes on research papers I have read, catego
 ## Table of Contents
 
 - [CXL-Related Papers](#cxl-related-papers) — 2026, 2024, 2023
+- [Heterogeneous Storage & File Systems](#heterogeneous-storage--file-systems) — 2025
 - [Persistent Memory (PMEM)](#persistent-memory-pmem)
 - [Memory for LLM](#memory-for-llm)
 - [Deep Learning Systems & Storage Optimization](#deep-learning-systems--storage-optimization)
@@ -63,6 +64,20 @@ This repository contains structured notes on research papers I have read, catego
    - **Code**: [Github](https://github.com/MoatLab/Pond)
    - **Summary**: 
    - **Reading Notes**: [Reading notes](./notes/2023/Pond-ASPLOS.md)
+
+---
+
+## Heterogeneous Storage & File Systems
+
+### 2025
+
+#### **1. PolyStore: Exploiting Combined Capabilities of Heterogeneous Storage**
+   - **Authors**: Yujie Ren, David Domingo, Jian Zhang, Paul John, Rekha Pitchumani, Sanidhya Kashyap, Sudarsun Kannan (Rutgers University, EPFL, Samsung Semiconductor)
+   - **Conference**: FAST 2025
+   - **Link**: [Paper Link](https://www.usenix.org/conference/fast25/presentation/ren)
+   - **Code Repository**: [PolyStore](https://github.com/RutgersCSSystems/PolyStore)
+   - **Summary**: PolyStore argues the storage *hierarchy* itself is the bottleneck for heterogeneous devices, since putting the fast device on top forfeits the combined bandwidth and concentrates contention there. It is a meta layer spanning userspace and the OS, sitting atop mature device-optimized file systems (NOVA for PM, ext4/F2FS for flash), that stripes a single logical file horizontally across devices at 2MB granularity via a range-tree index, a closed-loop bandwidth-aware thread/data placement mechanism, a heterogeneity-aware user-level DRAM cache, and coordinated cross-device persistence. Reaches 92.3% of combined PM+NVMe bandwidth, up to 9.38x over state-of-the-art caching/tiering on microbenchmarks and 1.52x-2.02x on RocksDB/Redis/GraphWalker.
+   - **Reading Notes**: [Reading notes](./notes/2025/PolyStore-FAST25.md)
 
 ---
 
