@@ -102,115 +102,53 @@ Two device-specific policies:
 
 # Evaluation
 
-**Testbeds (Table 2/3)**
-
 | | Config I | Config II | Config III |
 |---|---|---|---|
 | Faster | 256 GB Optane PM | 1 TB NVMe SSD | 256 GB Optane PM |
 | Slower | 1 TB NVMe SSD | 2 TB SATA SSD | 1 TB NVMe SSD |
 | Slowest | - | - | 2 TB SATA SSD |
 
-Device bandwidths (write / read): PM **4.6 / 13.2 GB/s**, NVMe **1.2 / 1.2 GB/s**, SATA **560 / 530 MB/s**. File systems: NOVA for PM, ext4 for NVMe/SATA. Baselines: PM-only (NOVA), NVMe-only, SATA-only, **Orthus** (caching), **Strata** and **SPFS** (tiering), **P2CACHE** (PM+DRAM). *None of the baselines supports more than two device types* — Config III is PolyStore-only.
-
-## 5.1 Cumulative bandwidth (Config I, direct I/O, 4 KB, 64 GB)
+Bandwidth (write / read): PM **4.6 / 13.2 GB/s**, NVMe **1.2 / 1.2 GB/s**, SATA **560 / 530 MB/s**. NOVA on PM, ext4 on flash. Baselines: PM-only, NVMe-only, SATA-only, **Orthus** (caching), **Strata** / **SPFS** (tiering), **P2CACHE** (PM+DRAM). *No baseline supports more than two device types*, so Config III is PolyStore-only.
 
 <figure>
        <img src="../../imgs/PolyStore-FAST25/E1.png" alt="Figure 3" style="width:100%; height:auto;">
-       <figcaption>Figure 3: Microbenchmark with direct I/O (no DRAM cache) on PM/NVMe. Red dotted lines = maximum combined PM+NVMe bandwidth.</figcaption>
+       <figcaption>Figure 3: Microbenchmark, direct I/O without DRAM cache, Config I. Red dotted lines = maximum combined PM+NVMe bandwidth. This is the paper in one figure: every prior system sits far under the line, PolyStore-dynamic nearly touches it.</figcaption>
    </figure>
 
-- **Sequential write**: PolyStore-static already beats PM-only **2.16x**, NVMe-only **3.25x**, Orthus **4.23x**. PolyStore-dynamic reaches **92.3% of combined bandwidth** at 32 threads — **1.48x** over static and **up to 9.38x** over the other approaches.
-- **Random write**: dynamic gains over static are marginal, because static mapping already happens to be near-optimal there.
-- **Sequential read**: PolyStore-dynamic beats PM-only by **1.11x** at 32 threads. Modest — but note PM-only *is* the read-bandwidth king here (13.2 GB/s), so exceeding it at all means the NVMe read path is genuinely additive.
+## Results at a glance
 
-**Table 4 — average latency (µs), 32 threads, Config I.** This table is the cleanest single result in the paper.
-
-| System | Sequential Write | Sequential Read |
-|---|---|---|
-| Orthus | 150.4 | 54.3 |
-| Strata | 144.1 | 73.2 |
-| SPFS | 123.2 | 121.4 |
-| PolyStore-static | 85.2 | 84.1 |
-| **PolyStore-dynamic** | **23.5** | **22.9** |
-
-Write latency drops **6.38x** vs Orthus. The hierarchical systems' latency *spikes* at high thread counts precisely because they funnel everything into PM.
-
-<figure>
-       <img src="../../imgs/PolyStore-FAST25/E2.png" alt="Figure 4" style="width:80%; height:auto;">
-       <figcaption>Figure 4: (a) Per-epoch I/O for sequential write. PolyStore-dynamic converges to 8-10 threads on PM with the rest on NVMe, and re-saturates PM (epochs 80 and 124, dotted lines) as PM threads finish. (b) Random-read breakdown — the extra cost of running two file systems is more than repaid.</figcaption>
-   </figure>
-
-## 5.2 Sensitivity
-
-<figure>
-       <img src="../../imgs/PolyStore-FAST25/E3.png" alt="Figure 5" style="width:80%; height:auto;">
-       <figcaption>Figure 5: (a) Poly-index node size and epoch interval, Config II — both peak at the chosen defaults (2 MB / 200 ms). (b) File system choice, Config I.</figcaption>
-   </figure>
-
-- Node size: smaller is better for bandwidth, worse for memory footprint. Epoch interval: shorter reacts faster, costs more profiling. 2 MB and 200 ms are the measured knees, not arbitrary picks.
-- **File systems matter a lot**: NOVA(PM)/F2FS(NVMe) beats ext4-DAX(PM)/ext4(NVMe) by **up to 1.63x**. This validates the whole "reuse mature per-device file systems" premise — the meta-layer inherits their quality.
-
-<figure>
-       <img src="../../imgs/PolyStore-FAST25/E4.png" alt="Figure 6" style="width:100%; height:auto;">
-       <figcaption>Figure 6: Config II (NVMe/SATA) and Config III (three devices).</figcaption>
-   </figure>
-
-- **No PM required**: on NVMe+SATA, PolyStore gets **1.87x** over NVMe-only on writes and **2.23x** over Orthus on reads. The design is not an Optane artifact.
-- **Shared file**, 32 threads (16 readers + 16 writers) on one 64 GB file: **2.95x** for writers, **3.04x** for readers vs NVMe-only — Poly-index's range-level locks dissolve the per-inode `rw-lock` bottleneck by splitting one logical file into several physical files.
-- **Three devices**: **91.7%** of the combined bandwidth. Horizontal scaling actually scales.
-
-## 5.3 DRAM caching
-
-<figure>
-       <img src="../../imgs/PolyStore-FAST25/E5.png" alt="Figure 7" style="width:100%; height:auto;">
-       <figcaption>Figure 7: (a,b) Random write/read with the working set fitting in DRAM. (c,d) Sensitivity to DRAM cache size ratio (16:1 means the workload is 16x the cache).</figcaption>
-   </figure>
-
-- Working set in cache: **up to 6.31x** over baselines. P2CACHE collapses at high thread counts because it uses **PM as the write cache**, re-creating the PM contention problem one layer up.
-- Cache under pressure (16:1): PolyStore's **concurrent evictions across HSDs** relieve memory pressure, giving **3.18x** over PM-only and **2.21x** over NVMe-only with the OS page cache. The insight is that eviction bandwidth is itself a cumulative resource.
-
-## 5.4 Metadata-heavy (Filebench)
-
-<figure>
-       <img src="../../imgs/PolyStore-FAST25/E6.png" alt="Figure 8" style="width:70%; height:auto;">
-       <figcaption>Figure 8: Varmail and Fileserver. Metadata operations are 69% / 63% of I/O; files are 512 KB / 1 MB with read:write of 1:1 / 1:2.</figcaption>
-   </figure>
-
-**3.12x** over PM-only on write-heavy Fileserver. This is the case where PolyStore *could* have lost — small files, lots of creates — and the adaptive on-demand file creation (§4.4.1) is what saves it, since small files never get a second physical file. Gains over the other systems are marginal and come mostly from Poly-cache eliminating syscalls, not from cumulative bandwidth.
-
-## 5.5 Applications
+| Question | Answer |
+|---|---|
+| Cumulative bandwidth (seq write, Config I) | **92.3% of combined** at 32 threads; 1.48x over PolyStore-static, **up to 9.38x** over caching/tiering |
+| Latency, 32 threads | write **23.5 µs** vs Orthus 150.4 (**6.38x**); read 22.9 vs 54.3. Hierarchical systems spike because everything funnels into PM |
+| Sequential read | 1.11x over PM-only — modest, but PM-only *is* the read king at 13.2 GB/s, so any gain means NVMe reads are genuinely additive |
+| Works without PM? (NVMe+SATA) | **1.87x** over NVMe-only (write), 2.23x over Orthus (read). Not an Optane artifact |
+| Shared 64 GB file, 16 readers + 16 writers | **2.95x / 3.04x** over NVMe-only — range-level locks dissolve the per-inode `rw-lock` |
+| Three devices | **91.7%** of combined bandwidth. Horizontal scaling scales |
+| Does the underlying FS matter? | NOVA/F2FS beats ext4-DAX/ext4 by **1.63x** — validates the whole "reuse mature per-device FSes" premise |
+| Poly-cache | **6.31x** when the working set fits; under 16:1 pressure **3.18x** over PM-only, because eviction itself uses cumulative bandwidth |
+| Metadata-heavy (Filebench) | **3.12x** over PM-only on Fileserver; gains over the *other* systems are marginal and come from skipping syscalls, not bandwidth |
+| Multi-app / crash recovery | 1.96x over P2CACHE without hurting Redis; **2.91x** post-recovery throughput (recovery itself is slightly *slower* — physical files restore before Poly-inodes) |
+| GraphWalker MS-PPR | **2.46x fewer PM writes** than Orthus, graph load 1.84x / 1.62x faster than Orthus / SPFS — because it checks PM write saturation before promoting |
 
 <figure>
        <img src="../../imgs/PolyStore-FAST25/E7.png" alt="Figure 9" style="width:100%; height:auto;">
-       <figcaption>Figure 9: RocksDB and Redis on PM/NVMe. (a) YCSB A-F, 32 threads, 10M keys, 512 B values, 128 MB SST files. (b) DB file placement trace over time for YCSB-A. (c) RocksDB + 16-instance Redis concurrently. (d) Throughput after failure recovery, with recovery time on the right axis.</figcaption>
+       <figcaption>Figure 9: RocksDB + Redis, Config I. YCSB gains are 1.52x (A) and 2.02x (F); F wins biggest because Poly-cache evicts NVMe-resident blocks *into PM*, speeding up reaccess.</figcaption>
    </figure>
-
-- **YCSB**: **1.52x** on write-heavy A, **2.02x** on F. F is the best case because its 50% read-modify-write pattern lets Poly-cache **evict NVMe-resident blocks into PM**, so reaccess is faster — eviction doing placement work, as designed.
-- **Multi-application**: **1.96x** over P2CACHE while *not* degrading Redis, using PolyOS's Linux fair-I/O throttling.
-- **Failure recovery** (`db_bench fillrandom`, injected failures): recovery is *slightly slower* (physical files must recover before Poly-inodes/Poly-trees), but total throughput is **2.91x** better. Honest reporting of a real tradeoff.
-
-<figure>
-       <img src="../../imgs/PolyStore-FAST25/E8.png" alt="Figure 10" style="width:75%; height:auto;">
-       <figcaption>Figure 10: GraphWalker MS-PPR, 64 GB graph, DRAM capped at 16 GB and PM at 32 GB to force migration. (a) Runtime breakdown. (b) Migration footprint.</figcaption>
-   </figure>
-
-- **GraphWalker** is the migration stress test. PolyStore issues **2.46x fewer PM writes** than Orthus, and loads graph + walk info **1.84x / 1.62x** faster than Orthus / SPFS. Mechanism: it checks whether PM's **write** bandwidth is saturated before promoting, and just reads directly from NVMe when it is. Orthus promotes regardless (turning reads into PM writes); SPFS cannot promote at all without a write.
 
 # Takeaways / My Notes
 
-1. **The thesis is about *direction of prioritization*, not about a new device.** Every baseline fails the same way: it decides *a priori* that the fast device should be preferred. PolyStore's contribution is replacing that prior with a **closed-loop measurement** (Algorithm 1's state machine + `BW_Move`'s saturation check). If I remember one number: **92.3% of combined bandwidth** where the best prior system gets a fraction of one device's.
+1. **The thesis is about the *direction of prioritization*, not a new device.** Every baseline decides *a priori* that the fast device wins. PolyStore replaces that prior with a closed loop — Algorithm 1's state machine and `BW_Move`'s saturation check. One number to keep: **92.3% of combined bandwidth**.
 
-2. **"Meta-layer over mature file systems" is the reusability argument, and the 1.63x NOVA/F2FS-vs-ext4 result is what backs it.** Contrast with Strata, which had to *write* a cross-media file system. PolyStore inherits NOVA's per-CPU scalability and F2FS's flash-friendly logging for free. This is a genuinely good systems-engineering position and it generalizes better than the performance numbers alone suggest — plug in a CXL-SSD and its file system and the layer should still work.
+2. **"Meta-layer over mature file systems" is the reusability argument, and the 1.63x NOVA/F2FS result is what backs it.** Strata had to *write* a cross-media file system; PolyStore inherits NOVA's per-CPU scalability and F2FS's flash-friendly logging for free. Should extend to a CXL-SSD plus its file system unchanged.
 
-3. **The 2 MB constant is load-bearing and worth remembering.** It is simultaneously: the Poly-index locking granularity, the Poly-cache buffer size, the huge-page size, the small-vs-large file threshold, and Linux's max single block I/O request size. That last alignment is the non-obvious one — it means a whole range evicts in one request.
+3. **2 MB is load-bearing.** It is simultaneously the Poly-index lock granularity, the Poly-cache buffer, the huge-page size, the small-vs-large file threshold, and **Linux's max single block I/O request** — that last alignment is why a whole range evicts in one request.
 
-4. **Eviction as placement is the sleeper idea.** Because the layout is horizontal, Poly-cache can evict a block to *any* device, not back to where it came from. That is what produces the best YCSB-F result, and it is a capability that no hierarchical cache can have by construction.
+4. **Eviction as placement is the sleeper idea.** Horizontal layout lets Poly-cache evict a block to *any* device, not back where it came from. That produces the best YCSB-F result, and no hierarchical cache can do it by construction.
 
-5. **Compare with the tiered-memory line of work.** [[TPP-ASPLOS]] and [[Memstrata-OSDI24]] both accept a fast/slow *memory* hierarchy and work hard to place pages well within it; PolyStore argues the hierarchy itself is the bug for *storage*. [[Beluga-SIGMOD26]] takes the third position — close the latency gap in hardware until placement stops mattering. Three different answers to the same question, and the deciding variable is how big the fast/slow gap actually is: PolyStore's PM/NVMe gap (~4x write) is small enough to make horizontal striping win, which would not hold for DRAM vs. a SATA SSD.
+5. **Three answers to one question.** [[TPP-ASPLOS]] and [[Memstrata-OSDI24]] *manage* a fast/slow gap; [[Beluga-SIGMOD26]] *closes* it in hardware; PolyStore *denies* the hierarchy exists. The deciding variable is the size of the gap — PolyStore's PM/NVMe write gap (~4x) is small enough for striping to win, which would not hold for DRAM vs. SATA.
 
-6. **Where I am skeptical.** (a) The headline **9.38x** is a microbenchmark best case; real applications land at **1.52x-2.02x**, and Filebench gains over non-PM-only baselines are marginal. (b) The **common minimal durability** rule means adding one weak file system silently downgrades guarantees for the whole logical file — the paper is upfront about it, but it is a sharp edge for anyone deploying this. (c) The static thread mapping is bootstrapped from **offline `fio` profiling**, which is a deployment burden the paper does not really price. (d) The greedy state machine is per *adjacent device pair* and hill-climbing; with three devices it converges well here, but nothing argues it generalizes to many devices or to adversarial workload phase changes — the only escape hatch is the global reset on line 29. (e) Optane is discontinued, so Config II (NVMe/SATA) is really the result that matters for the future, and it is the weaker one (1.87x).
-
-7. **Open direction**: the obvious follow-on is CXL-attached SSDs / CXL memory as another "device" in the horizontal set — cited in the intro but never evaluated. That is exactly the seam where this line meets [[Beluga-SIGMOD26]].
+6. **Where I'm skeptical.** 9.38x is a microbenchmark best case — applications land at 1.52x-2.02x. **Common minimal durability** means one weak file system silently downgrades guarantees for the whole logical file. Static mapping is bootstrapped from offline `fio` profiling, a deployment cost the paper doesn't price. And with Optane discontinued, the number that actually matters for the future is the weaker Config II result (**1.87x**).
 
 ## Acknowledgement
 All figures are cropped from the authors' paper (FAST '25 proceedings, pp. 539-555).
